@@ -196,7 +196,7 @@ def fit_theta_for_frequency(
             f.write(f"  SSE:   {s['ses_sse']}\n")
             f.write(f"n_obs: {s['n_obs']}\n")
 
-        # ---- diagnostic plot ----
+        # diagnostic plot
         plt.figure(figsize=(10, 4))
         plt.plot(train_series.index, train_series.values, label="observed")
         fitted = res["fitted"]
