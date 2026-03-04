@@ -1,0 +1,13 @@
+Theta model summary
+-------------------
+freq: quarterly
+series_id: Q1
+theta: 2.0
+w_trend: 0.5
+trend: y ~= a + b*t
+  a (intercept): 1966.702731
+  b (slope):     27.685004
+SES (on theta-series):
+  alpha: 0.9999999850988388
+  SSE:   273320.08520737826
+n_obs: 67

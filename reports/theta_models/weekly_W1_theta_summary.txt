@@ -1,0 +1,13 @@
+Theta model summary
+-------------------
+freq: weekly
+series_id: W1
+theta: 2.0
+w_trend: 0.5
+trend: y ~= a + b*t
+  a (intercept): 6296.771970
+  b (slope):     0.920565
+SES (on theta-series):
+  alpha: 0.565999409736832
+  SSE:   9635587901.561672
+n_obs: 1603

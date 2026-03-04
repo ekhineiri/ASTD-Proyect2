@@ -1,0 +1,13 @@
+Theta model summary
+-------------------
+freq: hourly
+series_id: H10
+theta: 2.0
+w_trend: 0.5
+trend: y ~= a + b*t
+  a (intercept): 72.490313
+  b (slope):     0.009734
+SES (on theta-series):
+  alpha: 0.9999999850988388
+  SSE:   3632988.7880831477
+n_obs: 960

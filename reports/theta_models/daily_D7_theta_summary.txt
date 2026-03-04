@@ -1,0 +1,13 @@
+Theta model summary
+-------------------
+freq: daily
+series_id: D7
+theta: 2.0
+w_trend: 0.5
+trend: y ~= a + b*t
+  a (intercept): 380.706745
+  b (slope):     1.495861
+SES (on theta-series):
+  alpha: 0.9999999850988388
+  SSE:   37451523.51673465
+n_obs: 3317

@@ -1,0 +1,13 @@
+Theta model summary
+-------------------
+freq: monthly
+series_id: M7
+theta: 2.0
+w_trend: 0.5
+trend: y ~= a + b*t
+  a (intercept): 1364.406012
+  b (slope):     -1.027861
+SES (on theta-series):
+  alpha: 0.9999999850988388
+  SSE:   938388.4396883554
+n_obs: 258

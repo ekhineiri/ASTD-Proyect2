@@ -1,0 +1,13 @@
+Theta model summary
+-------------------
+freq: yearly
+series_id: Y2
+theta: 2.0
+w_trend: 0.5
+trend: y ~= a + b*t
+  a (intercept): 5634.861413
+  b (slope):     -3.953676
+SES (on theta-series):
+  alpha: 0.48918953872218834
+  SSE:   32100377.2561404
+n_obs: 55
