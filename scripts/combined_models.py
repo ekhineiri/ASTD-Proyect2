@@ -17,6 +17,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from statsmodels.tsa.arima.model import ARIMA
+from statsmodels.tsa.stattools import adfuller, acf, pacf
 
 # Import the already written theta implementations
 from scripts.theta_models import fit_theta_model
@@ -37,6 +38,58 @@ HORIZONS = {
     "daily": 14,
     "hourly": 48
 }
+
+def estimate_arima_order(
+    series: pd.Series,
+    max_d: int = 2,
+    max_p: int = 5,
+    max_q: int = 5,
+    significance: float = 0.05,
+) -> tuple[int, int, int]:
+    """Estimate ARIMA(p, d, q) order from the data.
+
+    d is determined by repeated ADF tests until stationarity is achieved.
+    p is determined from the PACF of the stationary series.
+    q is determined from the ACF of the stationary series.
+    """
+    # --- determine d via ADF test ---
+    d = 0
+    stationary = series.copy()
+    while d < max_d:
+        result = adfuller(stationary.dropna(), autolag="AIC")
+        if result[1] < significance:
+            break  # series is stationary
+        stationary = stationary.diff()
+        d += 1
+
+    stationary = stationary.dropna()
+    n_lags = min(40, len(stationary) // 2 - 1)
+    if n_lags < 1:
+        return (0, d, 0)
+
+    # --- determine p from PACF ---
+    confidence_interval = 1.96 / np.sqrt(len(stationary))
+    pacf_vals = pacf(stationary, nlags=n_lags, method="ywm")
+    p = 0
+    for i in range(1, len(pacf_vals)):
+        if abs(pacf_vals[i]) > confidence_interval:
+            p = i
+        else:
+            break  # cut-off detected
+    p = min(p, max_p)
+
+    # --- determine q from ACF ---
+    acf_vals = acf(stationary, nlags=n_lags, fft=True)
+    q = 0
+    for i in range(1, len(acf_vals)):
+        if abs(acf_vals[i]) > confidence_interval:
+            q = i
+        else:
+            break
+    q = min(q, max_q)
+
+    return (p, d, q)
+
 
 def combine_forecasts(arima_fc, theta_fc):
     """Average ensemble."""

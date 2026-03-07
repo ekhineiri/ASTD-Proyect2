@@ -16,14 +16,14 @@ Theta Summary:
   w_trend: 0.5
   Trend: y = 640.4912 + 54.3412*t
   SES alpha: 0.7975
-  SES SSE: 15655319.1642
+  SES SSE: 15655319.1701
 
 Training observations: 43
 Forecast horizon: 8
 
 First 5 forecast values:
-  f1: 2801.6513
-  f2: 2818.6906
-  f3: 2834.2063
-  f4: 2848.8705
-  f5: 2863.0587
+  f1: 2801.6509
+  f2: 2818.6902
+  f3: 2834.2059
+  f4: 2848.8700
+  f5: 2863.0583

@@ -39,6 +39,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from statsmodels.tsa.holtwinters import SimpleExpSmoothing
+from scipy.optimize import minimize_scalar
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA_DIR = ROOT / "data"
@@ -55,6 +56,36 @@ def smape(y_true: np.ndarray, y_pred: np.ndarray) -> float:
     with np.errstate(divide="ignore", invalid="ignore"):
         val = np.mean(np.where(denom == 0, 0.0, num / denom)) * 100.0
     return float(val)
+
+def estimate_w_trend(
+    y: pd.Series,
+    theta: float = 2.0,
+    holdout_frac: float = 0.2,
+    min_holdout: int = 2,
+) -> float:
+    """Estimate optimal w_trend by minimizing sMAPE on an internal hold-out.
+
+    Falls back to 0.5 if the series is too short to split.
+    """
+    n = len(y)
+    holdout_size = max(min_holdout, int(n * holdout_frac))
+
+    # need enough history to fit meaningfully
+    if n - holdout_size < 4:
+        return 0.5
+
+    y_train = y.iloc[: n - holdout_size].reset_index(drop=True)
+    y_hold = y.iloc[n - holdout_size :].reset_index(drop=True)
+
+    def objective(w: float) -> float:
+        try:
+            res = fit_theta_model(y_train, steps=holdout_size, theta=theta, w_trend=w)
+            return smape(y_hold.values, res["forecast"])
+        except Exception:
+            return 1e9
+
+    result = minimize_scalar(objective, bounds=(0.0, 1.0), method="bounded")
+    return float(result.x)
 
 
 def fit_theta_model(
@@ -130,7 +161,7 @@ def fit_theta_model(
 def fit_theta_for_frequency(
     freq: str,
     theta: float = 2.0,
-    w_trend: float = 0.5,
+    w_trend: float | None = None,
     use_validation: bool = False,
 ) -> None:
     """Fit Theta model to all series of a given frequency (M4-style wide CSV)."""
@@ -167,12 +198,14 @@ def fit_theta_for_frequency(
         if not valid_vals.empty:
             valid_series = valid_vals.iloc[row_idx].dropna()
 
+        effective_w_trend = estimate_w_trend(train_series, theta=theta) if w_trend is None else w_trend
+
         try:
             res = fit_theta_model(
                 y=train_series,
                 steps=(len(valid_series) if not valid_series.empty else 0),
                 theta=theta,
-                w_trend=w_trend,
+                w_trend=effective_w_trend,
             )
         except Exception as exc:  # pragma: no cover - logging only
             print(f"[ERROR] Theta failed for {series_id} (freq={freq}): {exc}")
