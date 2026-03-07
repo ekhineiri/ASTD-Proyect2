@@ -96,7 +96,7 @@ def combine_forecasts(arima_fc, theta_fc):
     return (np.array(arima_fc) + np.array(theta_fc)) / 2.0
 
 
-def fit_combined_for_frequency(freq: str, order=(1, 1, 1), use_validation=False, model_number=1):
+def fit_combined_for_frequency(freq: str, order: tuple[int, int, int] | None = None, use_validation=False, model_number=1):
     """Fit ARIMA + Theta, combine forecasts, and save CSVs with diagnostics."""
 
     history_path = DATA_DIR / "validation_last_block" / f"history_{freq}.csv"
@@ -146,9 +146,14 @@ def fit_combined_for_frequency(freq: str, order=(1, 1, 1), use_validation=False,
         if not valid_vals.empty:
             valid_series = valid_vals.iloc[row_idx].dropna()
 
+        if order is None:
+            estimated_order = estimate_arima_order(train_series)
+        else:
+            estimated_order = order
+
         try:
             # ---------- ARIMA ----------
-            arima_model = ARIMA(train_series, order=order)
+            arima_model = ARIMA(train_series, order=estimated_order)
             arima_res = arima_model.fit()
             arima_forecast = arima_res.forecast(steps=forecast_steps).values
             arima_fitted = arima_res.fittedvalues
