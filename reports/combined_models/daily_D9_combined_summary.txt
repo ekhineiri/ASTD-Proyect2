@@ -1,0 +1,29 @@
+Combined ARIMA + Theta Model Summary
+====================================
+Frequency: daily
+Series ID: D9
+Model Number: 1
+ARIMA Order: (1, 1, 1)
+Theta parameters: theta=2.0, w_trend=0.5
+
+ARIMA Summary:
+  AIC: 3630.9739
+  BIC: 3642.0953
+  Log Likelihood: -1812.4870
+
+Theta Summary:
+  Theta: 2.0
+  w_trend: 0.5
+  Trend: y = 7056.6841 + 9.4032*t
+  SES alpha: 1.0000
+  SES SSE: 12245018.8511
+
+Training observations: 302
+Forecast horizon: 14
+
+First 5 forecast values:
+  f1: 9886.6403
+  f2: 9896.0586
+  f3: 9892.6750
+  f4: 9899.6786
+  f5: 9898.2542

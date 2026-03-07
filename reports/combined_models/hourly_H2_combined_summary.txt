@@ -1,0 +1,29 @@
+Combined ARIMA + Theta Model Summary
+====================================
+Frequency: hourly
+Series ID: H2
+Model Number: 1
+ARIMA Order: (1, 1, 1)
+Theta parameters: theta=2.0, w_trend=0.5
+
+ARIMA Summary:
+  AIC: 8206.8289
+  BIC: 8220.4779
+  Log Likelihood: -4100.4145
+
+Theta Summary:
+  Theta: 2.0
+  w_trend: 0.5
+  Trend: y = 131.0701 + 0.0282*t
+  SES alpha: 1.0000
+  SES SSE: 21656781.2054
+
+Training observations: 700
+Forecast horizon: 48
+
+First 5 forecast values:
+  f1: 12.3487
+  f2: 12.5437
+  f3: 12.4971
+  f4: 12.5194
+  f5: 12.5221

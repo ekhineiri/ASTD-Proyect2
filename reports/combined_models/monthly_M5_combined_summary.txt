@@ -1,0 +1,29 @@
+Combined ARIMA + Theta Model Summary
+====================================
+Frequency: monthly
+Series ID: M5
+Model Number: 1
+ARIMA Order: (1, 1, 1)
+Theta parameters: theta=2.0, w_trend=0.5
+
+ARIMA Summary:
+  AIC: 1061.9628
+  BIC: 1068.6213
+  Log Likelihood: -527.9814
+
+Theta Summary:
+  Theta: 2.0
+  w_trend: 0.5
+  Trend: y = 8142.6684 + -68.7139*t
+  SES alpha: 1.0000
+  SES SSE: 93816502.5175
+
+Training observations: 69
+Forecast horizon: 18
+
+First 5 forecast values:
+  f1: 4311.4243
+  f2: 4290.3131
+  f3: 4273.6753
+  f4: 4256.4225
+  f5: 4239.2542
